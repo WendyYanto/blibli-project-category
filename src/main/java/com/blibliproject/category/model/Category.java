@@ -2,6 +2,7 @@ package com.blibliproject.category.model;
 
 public class Category {
 
+    private int id;
     private String name;
     private String created_at;
     private String updated_at;
@@ -28,5 +29,13 @@ public class Category {
 
     public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
