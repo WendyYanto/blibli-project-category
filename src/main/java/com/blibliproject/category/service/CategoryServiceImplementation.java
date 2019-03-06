@@ -1,30 +1,70 @@
 package com.blibliproject.category.service;
 
 import com.blibliproject.category.model.Category;
-import com.blibliproject.category.repository.CategoryRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
+@Service
 public class CategoryServiceImplementation implements CategoryService{
 
-    private final CategoryRepository categoryRepository;
+    private List<Category> data = new ArrayList<Category>();
 
-    public CategoryServiceImplementation(CategoryRepository categoryRepository){
-        this.categoryRepository = categoryRepository;
+    @Override
+    public Category create(Category category) {
+
+        if(data.size() > 0 && findById(category.getId()) != null){
+            return null;
+        }
+
+        data.add(category);
+        return category;
+
     }
 
     @Override
-    public ArrayList<Category> findAll() {
-        return categoryRepository.readAll();
+    public Category findById(int id) {
+
+        for(int i=0;i<data.size();i++){
+            if(data.get(i).getId() == id){
+                return data.get(i);
+            }
+        }
+
+        return null;
     }
 
     @Override
-    public Category findCategoryById(Integer id) {
-        return categoryRepository.readById(id);
+    public List<Category> getAll() {
+        if(data.size() == 0){
+            return null;
+        }
+
+        return data;
     }
 
     @Override
-    public Category saveCategory(Category category) {
-        return categoryRepository.create(category);
+    public Category update(Category category, int id) {
+        Category current = findById(id);
+
+        if(current != null){
+            current.setName(category.getName());
+            return current;
+        }
+
+        return null;
+    }
+
+    @Override
+    public Category delete(int id) {
+        Category current = findById(id);
+
+        if(current != null){
+            data.remove(current);
+            return current;
+        }
+
+        return null;
     }
 }

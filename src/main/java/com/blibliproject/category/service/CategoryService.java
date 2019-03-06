@@ -1,15 +1,19 @@
 package com.blibliproject.category.service;
 
 import com.blibliproject.category.model.Category;
-
-import java.util.ArrayList;
+import org.springframework.stereotype.Component;
 import java.util.List;
 
+@Component
 public interface CategoryService {
 
-    public ArrayList<Category> findAll();
+    Category create(Category category);
 
-    public Category findCategoryById(Integer id);
+    Category findById(int id);
 
-    Category saveCategory(Category category);
+    List<Category> getAll();
+
+    Category update(Category category, int id);
+
+    Category delete(int id);
 }
