@@ -1,35 +1,29 @@
 package com.blibliproject.category.service;
 
 import com.blibliproject.category.model.Category;
+import com.blibliproject.category.repository.CategoryRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryServiceImplementation implements CategoryService{
 
-    private List<Category> data = new ArrayList<Category>();
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Override
     public Category create(Category category) {
-
-        if(data.size() > 0 && findById(category.getId()) != null){
-            return null;
-        }
-
-        data.add(category);
-        return category;
-
+        return categoryRepository.save(category);
     }
 
     @Override
-    public Category findById(int id) {
-
-        for(int i=0;i<data.size();i++){
-            if(data.get(i).getId() == id){
-                return data.get(i);
-            }
+    public Optional<Category> findById(Long id) {
+        Optional<Category> category = categoryRepository.findById(id);
+        if(category.isPresent()){
+            return category;
         }
 
         return null;
@@ -37,32 +31,24 @@ public class CategoryServiceImplementation implements CategoryService{
 
     @Override
     public List<Category> getAll() {
-        if(data.size() == 0){
-            return null;
-        }
-
-        return data;
+        return categoryRepository.findAll();
     }
 
     @Override
-    public Category update(Category category, int id) {
-        Category current = findById(id);
-
-        if(current != null){
-            current.setName(category.getName());
-            return current;
-        }
-
-        return null;
+    public Category update(Category category, Long id) {
+        Category current = new Category();
+        current.setName(category.getName());
+        current.setId(id);
+        return categoryRepository.save(current);
     }
 
     @Override
-    public Category delete(int id) {
-        Category current = findById(id);
-
-        if(current != null){
-            data.remove(current);
-            return current;
+    public Category delete(Long id) {
+        Optional<Category> current = categoryRepository.findById(id);
+        if(current.isPresent()){
+            Category deletedCategory = current.get();
+            categoryRepository.delete(current.get());
+            return deletedCategory;
         }
 
         return null;

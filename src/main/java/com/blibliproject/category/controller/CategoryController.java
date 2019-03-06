@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class CategoryController {
@@ -30,7 +31,7 @@ public class CategoryController {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Category findById(@PathVariable("id") int id){
+    public Optional<Category> findById(@PathVariable("id") Long id){
         return service.findById(id);
     }
 
@@ -50,7 +51,7 @@ public class CategoryController {
         produces = MediaType.APPLICATION_JSON_VALUE,
         consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public Category update(@RequestBody Category category,@PathVariable("id") int id){
+    public Category update(@RequestBody Category category,@PathVariable("id") Long id){
         return service.update(category,id);
     }
 
@@ -59,7 +60,7 @@ public class CategoryController {
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Category delete(@PathVariable("id") int id){
+    public Category delete(@PathVariable("id") Long id){
         return service.delete(id);
     }
 }
