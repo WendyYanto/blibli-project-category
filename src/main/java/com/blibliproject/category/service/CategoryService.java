@@ -2,19 +2,19 @@ package com.blibliproject.category.service;
 
 import com.blibliproject.category.model.Category;
 import org.springframework.stereotype.Component;
-import java.util.List;
-import java.util.Optional;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Component
 public interface CategoryService {
 
-    Category create(Category category);
+    Mono<Category> create(Category category);
 
-    Optional<Category> findById(Long id);
+    Mono<Category> findById(String id);
 
-    List<Category> getAll();
+    Flux<Category> getAll();
 
-    Category update(Category category, Long id);
+    Mono<Category> update(Category category, String id);
 
-    Category delete(Long id);
+    Mono<Category> delete(String id);
 }

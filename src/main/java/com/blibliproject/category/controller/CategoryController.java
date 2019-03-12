@@ -2,19 +2,20 @@ package com.blibliproject.category.controller;
 
 import com.blibliproject.category.model.Category;
 import com.blibliproject.category.service.CategoryService;
+import org.bson.types.ObjectId;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 @RestController
 public class CategoryController {
 
-    private CategoryService service;
+    private CategoryService categoryService;
 
-    public CategoryController(CategoryService service) {
-        this.service = service;
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
     }
 
     @RequestMapping(
@@ -22,8 +23,9 @@ public class CategoryController {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public List<Category> getAllCategories(){
-        return service.getAll();
+    public Flux<Category> getAllCategories(){
+        return categoryService.getAll()
+                .subscribeOn(Schedulers.elastic());
     }
 
     @RequestMapping(
@@ -31,8 +33,9 @@ public class CategoryController {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Optional<Category> findById(@PathVariable("id") Long id){
-        return service.findById(id);
+    public Mono<Category> findById(@PathVariable("id") String id){
+        return categoryService.findById(id)
+            .subscribeOn(Schedulers.elastic());
     }
 
     @RequestMapping(
@@ -41,8 +44,9 @@ public class CategoryController {
         produces = MediaType.APPLICATION_JSON_VALUE,
         consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public Category create(@RequestBody Category category){
-        return service.create(category);
+    public Mono<Category> create(@RequestBody Category category){
+        return categoryService.create(category)
+            .subscribeOn(Schedulers.elastic());
     }
 
     @RequestMapping(
@@ -51,16 +55,18 @@ public class CategoryController {
         produces = MediaType.APPLICATION_JSON_VALUE,
         consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public Category update(@RequestBody Category category,@PathVariable("id") Long id){
-        return service.update(category,id);
+    public Mono<Category> update(@RequestBody Category category,@PathVariable("id") String id){
+        return categoryService.update(category,id)
+                .subscribeOn(Schedulers.elastic());
     }
-
+//
     @RequestMapping(
         value = "/categories/{id}",
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Category delete(@PathVariable("id") Long id){
-        return service.delete(id);
+    public Mono<Category> delete(@PathVariable("id") String id){
+        return categoryService.delete(id)
+                .subscribeOn(Schedulers.elastic());
     }
 }
