@@ -45,7 +45,7 @@ public class CategoryServiceImplementation implements CategoryService{
     public Mono<Category> delete(String id) {
         return categoryRepository.findById(id)
             .flatMap(value -> categoryRepository.deleteById(id)
-            .thenReturn(value)
+                .thenReturn(value)
         );
     }
 }
