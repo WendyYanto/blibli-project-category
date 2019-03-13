@@ -1,6 +1,7 @@
 package com.blibliproject.category.controller;
 
 import com.blibliproject.category.model.Category;
+import com.blibliproject.category.security.ApiKey;
 import com.blibliproject.category.service.CategoryService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class CategoryController {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Mono<Category> findById(@PathVariable("id") String id){
+    public Mono<Category> findById(@PathVariable("id") String id, ApiKey apiKey){
         return categoryService.findById(id)
             .subscribeOn(Schedulers.elastic());
     }
@@ -43,7 +44,7 @@ public class CategoryController {
         produces = MediaType.APPLICATION_JSON_VALUE,
         consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public Mono<Category> create(@RequestBody Category category){
+    public Mono<Category> create(@RequestBody Category category, ApiKey apiKey){
         return categoryService.create(category)
             .subscribeOn(Schedulers.elastic());
     }
@@ -54,17 +55,17 @@ public class CategoryController {
         produces = MediaType.APPLICATION_JSON_VALUE,
         consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public Mono<Category> update(@RequestBody Category category,@PathVariable("id") String id){
+    public Mono<Category> update(@RequestBody Category category,@PathVariable("id") String id, ApiKey apiKey){
         return categoryService.update(category,id)
                 .subscribeOn(Schedulers.elastic());
     }
-//
+
     @RequestMapping(
         value = "/categories/{id}",
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Mono<Category> delete(@PathVariable("id") String id){
+    public Mono<Category> delete(@PathVariable("id") String id, ApiKey apiKey){
         return categoryService.delete(id)
                 .subscribeOn(Schedulers.elastic());
     }

@@ -35,10 +35,10 @@ public class CategoryServiceImplementation implements CategoryService{
     @Override
     public Mono<Category> update(Category category, String id) {
         return categoryRepository.findById(id)
-            .map(value -> new Category(value.getId(),category.getName()))
-            .flatMap(value -> categoryRepository.save(value)
-                .thenReturn(value)
-        );
+            .flatMap(value -> {
+                category.setId(value.getId());
+                return categoryRepository.save(category);
+            });
     }
 
     @Override
@@ -48,4 +48,16 @@ public class CategoryServiceImplementation implements CategoryService{
                 .thenReturn(value)
         );
     }
+
+    //Penjelasana FlatMap dan Map;
+//    public Mono<Category> edit(String id, String name){
+//        return categoryRepository.findById(id)
+//            .map(category -> getCategory(name, category))
+//            .flatMap(category -> categoryRepository.save(category));
+//    }
+//
+//    private Category getCategory(String name, Category category) {
+//        category.setName(name);
+//        return category;
+//    }
 }

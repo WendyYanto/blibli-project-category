@@ -74,14 +74,13 @@ public class CategoryRepositoryTest {
         totals.add(first_data);
         totals.add(second_data);
 
-        categoryRepository.saveAll(totals).blockFirst();
+        categoryRepository.saveAll(totals).collectList().block();
 
         Category firstReturnID = categoryRepository.findById("1").block();
         Category secondReturnID = categoryRepository.findById("2").block();
 
         Assert.assertTrue("secondReturnID Must Return Same Name",second_data.getName().equals(secondReturnID.getName()));
         Assert.assertTrue("firstReturnID Must Return Same Name",first_data.getName().equals(firstReturnID.getName()));
-
     }
 
     @Test
@@ -102,7 +101,6 @@ public class CategoryRepositoryTest {
 
         Category firstID = categoryRepository.findById("1").block();
         Assert.assertTrue("Category OF ID 1 have changed",firstID.getName().equals(update_data.getName()));
-
     }
 
     @Test
@@ -124,6 +122,9 @@ public class CategoryRepositoryTest {
 
         List<Category> list_data = categoryRepository.findAll().collectList().block();
 
+        Category returnID1 = categoryRepository.findById("1").block();
+
         Assert.assertTrue("list_data must return size of 1",list_data.size() == 1);
+        Assert.assertNull("returnID1 must return NULL",returnID1);
     }
 }
