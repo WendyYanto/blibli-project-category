@@ -20,9 +20,9 @@ public class ApiKeyHandlerMethodArgumentResolver implements HandlerMethodArgumen
            String value = exchange.getRequest().getHeaders().getFirst("API-KEY");
 
            if(value == null){
-               throw new ApiKeyNotFoundException("Error");
+               throw new ApiKeyNotFoundException("ERROR API KEY NOT FOUND");
            }else if(!value.equals("categories")){
-                throw new ApiKeyNotIdentifiedException("Error");
+                throw new ApiKeyNotIdentifiedException("ERROR API KEY NOT IDENTIFIED");
            }else{
                return new ApiKey(value);
            }

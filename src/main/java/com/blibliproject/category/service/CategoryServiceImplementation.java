@@ -44,12 +44,13 @@ public class CategoryServiceImplementation implements CategoryService{
     @Override
     public Mono<Category> delete(String id) {
         return categoryRepository.findById(id)
-            .flatMap(value -> categoryRepository.deleteById(id)
-                .thenReturn(value)
-        );
+            .map(value -> {
+                categoryRepository.deleteById(id);
+                return value;
+            });
     }
 
-    //Penjelasana FlatMap dan Map;
+    //Penjelasan FlatMap dan Map;
 //    public Mono<Category> edit(String id, String name){
 //        return categoryRepository.findById(id)
 //            .map(category -> getCategory(name, category))

@@ -13,13 +13,13 @@ public class ErrorController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = ApiKeyNotFoundException.class)
     public String ApiKey(ApiKeyNotFoundException exception){
-        return "APIKEY NOT FOUND";
+        return "API KEY NOT FOUND";
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = ApiKeyNotIdentifiedException.class)
     public String NotIdentified(ApiKeyNotIdentifiedException exception){
-        return "APIKEY NOT IDENTIFIED";
+        return "API KEY NOT IDENTIFIED";
     }
 
 }

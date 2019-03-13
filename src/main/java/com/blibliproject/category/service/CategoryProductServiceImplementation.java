@@ -9,8 +9,12 @@ import reactor.core.publisher.Mono;
 @Service
 public class CategoryProductServiceImplementation implements CategoryProductService{
 
-    @Autowired
     private CategoryProductRepository categoryProductRepository;
+
+    @Autowired
+    public CategoryProductServiceImplementation(CategoryProductRepository categoryProductRepository) {
+        this.categoryProductRepository = categoryProductRepository;
+    }
 
     @Override
     public Mono<CategoryHasProduct> create(CategoryHasProduct categoryHasProduct) {
